@@ -1,0 +1,5 @@
+__pycache__/
+.ipynb_checkpoints/
+rough.ipynb
+coordinate.py
+.DS_Store
