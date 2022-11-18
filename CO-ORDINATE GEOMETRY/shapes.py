@@ -1,5 +1,9 @@
 from matplotlib import pyplot as plt
+from d2_geometry import angle_between
 
+
+# Variables and functions
+# area of all shapes,
 
 class Triangle():
     """A class to perform some calculation on 2D triangles."""
@@ -29,9 +33,12 @@ class Triangle():
         plt.title(title)
 
         # points plotting
-        plt.scatter(self.A.x, self.A.y, marker=marker, label=f'A: {self.A.x, self.A.y}')
-        plt.scatter(self.B.x, self.B.y, marker=marker, label=f'B: {self.B.x, self.B.y}')
-        plt.scatter(self.C.x, self.C.y, marker=marker, label=f'C: {self.C.x, self.C.y}')
+        plt.scatter(self.A.x, self.A.y, marker=marker,
+                    label=f'A: {self.A.x, self.A.y}')
+        plt.scatter(self.B.x, self.B.y, marker=marker,
+                    label=f'B: {self.B.x, self.B.y}')
+        plt.scatter(self.C.x, self.C.y, marker=marker,
+                    label=f'C: {self.C.x, self.C.y}')
 
         plt.plot([self.A.x, self.B.x, self.C.x, self.A.x],
                  [self.A.y, self.B.y, self.C.y, self.A.y])
@@ -43,8 +50,8 @@ class Triangle():
         plt.axhline(color='k')
         plt.axvline(color='k')
 
-    def which_triangle(self):
-        """which_triangle : Tells you the type of triangle.
+    def which_triangleBySide(self):
+        """which_triangleBySide : Tells you the type of triangle.
         i.e. 'Equilateral', 'Isosceles', 'Scalene'.
 
         Returns:
@@ -54,16 +61,38 @@ class Triangle():
         BC = self.B.euclidianDistance(self.C)
         AC = self.A.euclidianDistance(self.C)
 
-        if AB==BC==AC:
-            return 'Equilateral Triangle'
-        elif (AB==BC) or (BC==AC) or (AC==AB):
-            return 'Isosceles Triangle'
+        if AB == BC == AC:
+            return 'Equilateral'
+        elif (AB == BC) or (BC == AC) or (AC == AB):
+            return 'Isosceles'
         else:
-            return 'Scalene Triangle'
+            return 'Scalene'
+
+    def which_triangleByAngle(self):
+        """Return type of triangle according to angles."""
+        ab2 = (self.A.x - self.B.x)**2 + (self.A.y - self.B.y)**2
+        bc2 = (self.B.x - self.C.x)**2 + (self.B.y - self.C.y)**2
+        ac2 = (self.C.x - self.A.x)**2 + (self.C.y - self.A.y)**2
+
+        AB, BC, AC = sorted([ab2, bc2, ac2])
+
+        return 'Acute' if AB + BC > AC else 'Right' if AB + BC == AC else 'Obtuse'
+
+    def area(self):
+        """area : Return area of triangle.
+
+        Returns:
+            float: Area of triangle.
+        """
+        area = 0.5 * abs((self.A.x * (self.B.y - self.C.y) +
+                          self.B.x * (self.C.y - self.A.y) +
+                          self.C.x * (self.A.y - self.B.y)))
+        return area
 
 
 class Quadilateral():
     """A class to perform some calculation on 2D Quadilaterals."""
+
     def __init__(self, A, B, C, D):
         """Takes four arguments which defines the Quadilateral's coordinates.
 
@@ -92,18 +121,24 @@ class Quadilateral():
         plt.title(title)
 
         # points plotting
-        plt.scatter(self.A.x, self.A.y, marker=marker, label=f'A: {self.A.x, self.A.y}')
-        plt.scatter(self.B.x, self.B.y, marker=marker, label=f'B: {self.B.x, self.B.y}')
-        plt.scatter(self.C.x, self.C.y, marker=marker, label=f'C: {self.C.x, self.C.y}')
-        plt.scatter(self.D.x, self.D.y, marker=marker, label=f'C: {self.D.x, self.D.y}')
+        plt.scatter(self.A.x, self.A.y, marker=marker,
+                    label=f'A: {self.A.x, self.A.y}')
+        plt.scatter(self.B.x, self.B.y, marker=marker,
+                    label=f'B: {self.B.x, self.B.y}')
+        plt.scatter(self.C.x, self.C.y, marker=marker,
+                    label=f'C: {self.C.x, self.C.y}')
+        plt.scatter(self.D.x, self.D.y, marker=marker,
+                    label=f'C: {self.D.x, self.D.y}')
 
         plt.plot([self.A.x, self.B.x, self.C.x, self.D.x, self.A.x],
                  [self.A.y, self.B.y, self.C.y, self.D.y, self.A.y])
 
         # Draw diagonal
         if diagonal:
-            plt.plot([self.A.x, self.C.x], [self.A.y, self.C.y], c='orange', linestyle='dashed')
-            plt.plot([self.B.x, self.D.x], [self.B.y, self.D.y], c='orange', linestyle='dashed')
+            plt.plot([self.A.x, self.C.x], [self.A.y, self.C.y],
+                     c='orange', linestyle='dashed')
+            plt.plot([self.B.x, self.D.x], [self.B.y, self.D.y],
+                     c='orange', linestyle='dashed')
 
         plt.legend()
         plt.xlabel('X-axis')
@@ -124,36 +159,63 @@ class Quadilateral():
         CD = self.C.euclidianDistance(self.D)
         AD = self.A.euclidianDistance(self.D)
 
-        if AB==BC==CD==AD:
-            return 'Rhombus' if self.is_rhombus() else 'Square'
-        elif AB==CD and BC==AD:
-            return 'Parallelogram' if self.is_llgm() else 'Rectangle'
-        else: 
-            return 'Nothing'
+        if AB == BC == CD == AD:
+            return 'Rhombus' if self.__is_rhombus() else 'Square'
+        elif AB == CD and BC == AD:
+            return 'Parallelogram' if self.__is_llgm() else 'Rectangle'
+        else:
+            return 'Irregular'
 
-    def is_llgm(self):
+    def __is_llgm(self):
         """is_llgm : Determines whether given quailateral is llgm or not.
 
         Returns:
             bool: Whether quailateral is llgm or not.
         """
-        mid_1 = self.A.mid_point(self.C)
-        mid_2 = self.B.mid_point(self.D)
+        mid_point_term = self.A.mid_point(self.C) == self.B.mid_point(self.D)
+        diagonal_term = self.A.euclidianDistance(
+            self.C) != self.B.euclidianDistance(self.D)
 
-        return True if mid_1 == mid_2 else False
+        return True if mid_point_term and diagonal_term else False
 
-    def is_rhombus(self):
+    def __is_rhombus(self):
         """is_rhombus : Determines whether given quailateral is rhombus or not.
 
         Returns:
             bool: Whether quailateral is rhombus or not.
         """
-        d1 = self.A.euclidianDistance(self.C)
-        d2 = self.B.euclidianDistance(self.D)
-        return True if d1!=d2 else False
+        diagonal_term = self.A.euclidianDistance(
+            self.C) != self.B.euclidianDistance(self.D)
+        side_term = self.A.euclidianDistance(self.B) == self.B.euclidianDistance(
+            self.C) == self.C.euclidianDistance(self.D) == self.A.euclidianDistance(self.D)
+
+        return True if diagonal_term and side_term else False
+
+    def __is_trapezium(self):
+        # Not Working
+        m1 = abs(self.A.slope(self.B)) - abs(self.C.slope(self.D)) == 0
+        m2 = abs(self.A.slope(self.C)) - abs(self.B.slope(self.D)) == 0
+
+        side_term = self.A.euclidianDistance(
+            self.D) == self.B.euclidianDistance(self.C)
+        if side_term and (m1 == True and m2 == False) or (m2 == True and m1 == False):
+            return True
+        else:
+            return False
+
+    def area(self):
+        """area : Return area of quadilateral.
+
+        Returns:
+            float: Area of quadilateral.
+        """
+        area = 0.5 * abs(((self.A.x*self.B.y + self.B.x*self.C.y + self.C.x*self.D.y + self.D.x*self.A.y)
+                          - (self.B.x*self.A.y + self.C.x*self.B.y + self.D.x*self.C.y + self.A.x*self.D.y)))
+        return area
 
 
 class Polygon():
     """A class to perform some calculation on 2D Polygons."""
+
     def __init__(self, *args) -> None:
         pass

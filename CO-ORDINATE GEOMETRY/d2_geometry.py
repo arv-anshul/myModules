@@ -1,6 +1,5 @@
 import matplotlib.pyplot as plt
 import numpy as np
-from math import atan, degrees
 
 
 class Cartesian_2D():
@@ -25,7 +24,7 @@ class Cartesian_2D():
     def slope(self, __o):
         temp_x = (__o.x - self.x)
         temp_y = (__o.y - self.y)
-        return temp_y/temp_x if temp_x != 0 else 'infinite'
+        return temp_y/temp_x if temp_x != 0 else 99999
 
     def mid_point(self, __o):
         temp_x = (self.x + __o.x) / 2
@@ -111,20 +110,28 @@ class Cartesian_2D():
 
 
 def angle_between(A, O, B):
-    # tanθ = ±(m1–m2) / (1+m1*m2)
-    # m1 = A.slope(O) if A.slope(O) is not 'infinite' else 0
-    # m2 = B.slope(O) if B.slope(O) is not 'infinite' else 0
+    """angle_between : Return ∠AOB of given two line-segment.
+
+    Args:
+        A (Cartesian_2D): Co-ordinate.
+        O (Cartesian_2D): Co-ordinate.
+        B (Cartesian_2D): Co-ordinate.
+
+    Returns:
+        tuple(int, int): (acute, obtuse) or (θ, 180-θ)
+    """
     m1 = A.slope(O)
     m2 = B.slope(O)
 
-    if m1 == 'infinite' or m2 == 'infinite':
-        return 0
-    elif m1*m2 != -1:
-        tan = abs((m1-m2)/(1+(m1*m2)))
-        angle = np.round(degrees(atan(tan)), 1)
-        return angle
+    if m1 == m2:
+        return 0, 180
+    elif m1*m2 == -1:
+        return 90, 90
     else:
-        return 90
+        tan = (m2-(m1))/(1+(m1)*m2)
+        acute = np.round(np.degrees(np.arctan(abs(tan))), 3)
+        obtuse = np.round(np.degrees(np.pi-np.arctan(abs((m2-(m1))/(1+(m1)*m2)))), 3)
+        return acute, obtuse
 
 
 def is_parallel(*lines):
