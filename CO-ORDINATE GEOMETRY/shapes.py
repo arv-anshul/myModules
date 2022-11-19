@@ -5,6 +5,13 @@ from d2_geometry import angle_between
 # Variables and functions
 # area of all shapes,
 
+class Polygon():
+    """A class to perform some calculation on 2D Polygons."""
+
+    def __init__(self, *args) -> None:
+        pass
+
+
 class Triangle():
     """A class to perform some calculation on 2D triangles."""
 
@@ -21,7 +28,7 @@ class Triangle():
         self.C = C
 
     def draw(self, marker='o', grid=True):
-        """draw : Draw the triangle and tells you the the type of it.
+        """Draw the triangle and tells you the the type of it.
 
         Args:
             marker (str, optional): Shape of point. Defaults to 'o'.
@@ -29,8 +36,8 @@ class Triangle():
         """
         plt.grid(grid)
 
-        title = self.which_triangle()
-        plt.title(title)
+        plt.title(
+            f'{self.which_triangleByAngle()} Angled, {self.which_triangleBySide()} Triangle')
 
         # points plotting
         plt.scatter(self.A.x, self.A.y, marker=marker,
@@ -50,12 +57,11 @@ class Triangle():
         plt.axhline(color='k')
         plt.axvline(color='k')
 
-    def which_triangleBySide(self):
-        """which_triangleBySide : Tells you the type of triangle.
-        i.e. 'Equilateral', 'Isosceles', 'Scalene'.
+    def which_triangleBySide(self) -> str:
+        """Tells you the type of triangle according to sides.
 
         Returns:
-            str: 'Equilateral', 'Isosceles', 'Scalene'
+            str: ['Equilateral', 'Isosceles', 'Scalene']
         """
         AB = self.A.euclidianDistance(self.B)
         BC = self.B.euclidianDistance(self.C)
@@ -69,7 +75,11 @@ class Triangle():
             return 'Scalene'
 
     def which_triangleByAngle(self):
-        """Return type of triangle according to angles."""
+        """Tells you the type of triangle according to angles.
+
+        Returns:
+            str: ['Acute', 'Right', 'Obtuse']
+        """
         ab2 = (self.A.x - self.B.x)**2 + (self.A.y - self.B.y)**2
         bc2 = (self.B.x - self.C.x)**2 + (self.B.y - self.C.y)**2
         ac2 = (self.C.x - self.A.x)**2 + (self.C.y - self.A.y)**2
@@ -79,7 +89,7 @@ class Triangle():
         return 'Acute' if AB + BC > AC else 'Right' if AB + BC == AC else 'Obtuse'
 
     def area(self):
-        """area : Return area of triangle.
+        """Return area of triangle.
 
         Returns:
             float: Area of triangle.
@@ -108,7 +118,7 @@ class Quadilateral():
         self.D = D
 
     def draw(self, diagonal=False, marker='o', grid=True):
-        """draw : Draw the quailateral and tells you the the type of it.
+        """Draw the quailateral and tells you the the type of it.
 
         Args:
             diagonal (bool, optional): Display the diagonal of the quailateral. Default to True.
@@ -148,7 +158,7 @@ class Quadilateral():
         plt.axvline(color='k')
 
     def which_quadilateral(self):
-        """which_triangle : Tells you the type of triangle.
+        """Tells you the type of triangle.
         i.e. Square, Rectangle, Rhombus, Parallelogram
 
         Returns:
@@ -167,7 +177,7 @@ class Quadilateral():
             return 'Irregular'
 
     def __is_llgm(self):
-        """is_llgm : Determines whether given quailateral is llgm or not.
+        """Determines whether given quailateral is llgm or not.
 
         Returns:
             bool: Whether quailateral is llgm or not.
@@ -179,7 +189,7 @@ class Quadilateral():
         return True if mid_point_term and diagonal_term else False
 
     def __is_rhombus(self):
-        """is_rhombus : Determines whether given quailateral is rhombus or not.
+        """Determines whether given quailateral is rhombus or not.
 
         Returns:
             bool: Whether quailateral is rhombus or not.
@@ -204,7 +214,7 @@ class Quadilateral():
             return False
 
     def area(self):
-        """area : Return area of quadilateral.
+        """Return area of quadilateral.
 
         Returns:
             float: Area of quadilateral.
@@ -212,10 +222,3 @@ class Quadilateral():
         area = 0.5 * abs(((self.A.x*self.B.y + self.B.x*self.C.y + self.C.x*self.D.y + self.D.x*self.A.y)
                           - (self.B.x*self.A.y + self.C.x*self.B.y + self.D.x*self.C.y + self.A.x*self.D.y)))
         return area
-
-
-class Polygon():
-    """A class to perform some calculation on 2D Polygons."""
-
-    def __init__(self, *args) -> None:
-        pass
