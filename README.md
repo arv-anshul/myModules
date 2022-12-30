@@ -4,8 +4,8 @@ I made some modules in Python language using OOPS methods.
 
 ## Modules
 
-1. [Co-ordinate Geometry Module](./CO-ORDINATE%20GEOMETRY/)
-2. [Fraction Module](./Fraction%20Module/)
+1. [Co-ordinate Geometry Module](./GEOMETRY/)
+2. [Fraction Module](./FRACTION/)
 
 ## By Creator
 

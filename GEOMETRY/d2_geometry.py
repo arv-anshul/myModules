@@ -194,7 +194,3 @@ def angle_between(A, O, B):
         obtuse = np.round(np.degrees(
             np.pi-np.arctan(abs((m2-(m1))/(1+(m1)*m2)))), 3)
         return acute, obtuse
-
-
-def is_parallel(*lines):
-    pass
