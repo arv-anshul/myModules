@@ -1,8 +1,9 @@
+from typing import Self
 import matplotlib.pyplot as plt
 import numpy as np
 
 
-class Cartesian_2D():
+class Point():
     """A class for creating co-ordinate on 2D plane."""
 
     def __init__(self, x, y) -> None:
@@ -21,14 +22,14 @@ class Cartesian_2D():
     def __str__(self) -> str:
         return f'({self.x}, {self.y})'
 
-    def __eq__(self, __o: object) -> bool:
+    def __eq__(self, __o: Self) -> bool:
         return True if self.x == __o.x and self.y == __o.y else False
 
     def euclidianDistance(self, __o) -> int | float:
         """Returns the Euclidian distance between two co-ordinate.
 
         Args:
-            __o (Cartesian_2D): Co-ordinate of other point.
+            __o (Point): Co-ordinate of other point.
 
         Returns:
             int | float: Distance between two co-ordinate.
@@ -41,7 +42,7 @@ class Cartesian_2D():
         """Returns slope of line-segment.
 
         Args:
-            __o (Cartesian_2D): Co-ordinate of other point.
+            __o (Point): Co-ordinate of other point.
 
         Returns:
             int | float: Slope of line-segment.
@@ -54,29 +55,29 @@ class Cartesian_2D():
         """Return the mid-point co-ordinate between two points in 2D plane.
 
         Args:
-            __o (Cartesian_2D): Co-ordinate of other point.
+            __o (Point): Co-ordinate of other point.
 
         Returns:
-            Cartesian_2D: Co-ordinate of mid-point.
+            Point: Co-ordinate of mid-point.
         """
         temp_x = (self.x + __o.x) / 2
         temp_y = (self.y + __o.y) / 2
-        return Cartesian_2D(temp_x, temp_y)
+        return Point(temp_x, temp_y)
 
     def section_formula(self, __o, m, n):
         """Break the line-segment into given sections and Return the co-ordinate of breakpoint.
 
         Args:
-            __o (Cartesian_2D): Co-ordinate of other point.
+            __o (Point): Co-ordinate of other point.
             m (int): First section of the line.
             n (int): Second section of the line.
 
         Returns:
-            Cartesian_2D: Co-ordinate of breakpoint.
+            Point: Co-ordinate of breakpoint.
         """
         temp_x = float((n * self.x)+(m * __o.x))/(m + n)
         temp_y = float((n * self.y)+(m * __o.y))/(m + n)
-        return Cartesian_2D(temp_x, temp_y)
+        return Point(temp_x, temp_y)
 
     def which_quadrant(self) -> int | str:
         """Return the quadrant in which the co-ordinate lies.
@@ -174,9 +175,9 @@ def angle_between(A, O, B):
     """Return ∠AOB of given two line-segment.
 
     Args:
-        A (Cartesian_2D): Co-ordinate.
-        O (Cartesian_2D): Co-ordinate.
-        B (Cartesian_2D): Co-ordinate.
+        A (Point): Co-ordinate.
+        O (Point): Co-ordinate.
+        B (Point): Co-ordinate.
 
     Returns:
         tuple(float, float): (acute, obtuse) or (θ, 180°-θ)

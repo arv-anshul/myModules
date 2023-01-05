@@ -1,6 +1,7 @@
+.DS_Store
 __pycache__/
 .ipynb_checkpoints/
-rough.*
-coordinate.py
-.DS_Store
 .vscode/
+
+# Ignore Directory files
+__rough__.*
